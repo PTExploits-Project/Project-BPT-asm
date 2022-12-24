@@ -203,9 +203,8 @@ void StartHook() {
                         write(0x004073E6, (BYTE*)"\x90\x90\x90\x90\x90\x90", 6); //dwLastCharMove
                         write(0x00407400, (BYTE*)"\x90\x90\x90\x90\x90\x90", 6); //dwLastMouseMove
 
-                        /*write(0x5d818d, (BYTE*)"\xC3", 1); //sendsethackuser
-                        write(0x44d145, (BYTE*)"\xEB", 1); //checkcharform*/
-                        
+                        //dc4 drop item / sell item
+                        write(0x5d818d, (BYTE*)"\xC3", 1); //sendsethackuser
                         write(0x496bed, (BYTE*)"\xEB", 1); //checkinvenitemform
 
                         hookFunc(0xE9, (int)noHp, 0x0041ED5F); //trava hp
