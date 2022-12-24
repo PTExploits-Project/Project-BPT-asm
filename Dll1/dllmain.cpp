@@ -182,27 +182,35 @@ void StartHook() {
                         //hookFunc(0xE9, (DWORD)integrity_08, integrityCheck_04_6, (BYTE*)"\x90", 1);
                         //jmpo8 = integrityCheck_04_6 + 0x5;
 
-                        //dm_SelectRange
-                        copy_paste(codeGame + 0x57B5, (void*)0x004067B5, 0x5);
-                        //dm_SendRangeDamage
-                        copy_paste(codeGame + 0x683A, (void*)0x0040783A, 0x267);
-                        //dm_SendTransDamage
-                        copy_paste(codeGame + 0x63B9, (void*)0x004073B9, 0x3A6);
-                        //send2
-                        copy_paste(codeGame + 0x5E5AA, (void*)0x0045F5AA, 6);
-
                         lol(inGame, false);
                         lol(findMob, false);
                         lol(putItem, false);
 
+                        //dm_SendTransDamage
+                        copy_paste(codeGame + 0x63B9, (void*)0x004073B9, 0x6);
+                        copy_paste(codeGame + 0x64ED, (void*)0x004074ED, 0x6);
+                        copy_paste(codeGame + 0x64FC, (void*)0x004074FC, 0x10);
+                        copy_paste(codeGame + 0x650D, (void*)0x0040750D, 0x6);
+                        copy_paste(codeGame + 0x672C, (void*)0x0040772C, 0x6);
+                        //dm_SelectRange
+                        copy_paste(codeGame + 0x57B5, (void*)0x004067B5, 0x5);
+                        //dm_SendRangeDamage
+                        copy_paste(codeGame + 0x683A, (void*)0x0040783A, 0x12);
+                        copy_paste(codeGame + 0x6A99, (void*)0x00407A99, 0x6);
+                        //send2
+                        copy_paste(codeGame + 0x5E5AA, (void*)0x0045F5AA, 6);
+
+                        write(0x004073E6, (BYTE*)"\x90\x90\x90\x90\x90\x90", 6); //dwLastCharMove
+                        write(0x00407400, (BYTE*)"\x90\x90\x90\x90\x90\x90", 6); //dwLastMouseMove
+
                         /*write(0x5d818d, (BYTE*)"\xC3", 1); //sendsethackuser
                         write(0x44d145, (BYTE*)"\xEB", 1); //checkcharform*/
                         
-                        //write(0x496bed, (BYTE*)"\xEB", 1); //checkinvenitemform
+                        write(0x496bed, (BYTE*)"\xEB", 1); //checkinvenitemform
 
                         hookFunc(0xE9, (int)noHp, 0x0041ED5F); //trava hp
 
-                        //hookFunc(0xE9, (int)dm_SendTransDamage, 0x410b0c);
+                        hookFunc(0xE9, (int)dm_SendTransDamage, 0x410b0c);
                     }
                     else {
                         MessageBoxA(0, "Error 500", "", MB_OK | MB_ICONERROR);
