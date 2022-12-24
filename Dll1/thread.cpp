@@ -110,7 +110,7 @@ void putItem() {
             szIvenItem = 0x033B2AD4;
             int somaIvenItem = 0x314;
 
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 100; i++) {
                 if (read(szIvenItem, 4) > 0x01000000 && read(szIvenItem + 0xE4, 1) == 0 && read(szIvenItem + 0xCC, 1) == 1) { //codeItem - useItem - mouseItem
                     for (int j = 0; j < sizeof(arrayDontSell); j++) {
                         bFlagSell = true;
@@ -138,7 +138,7 @@ void putItem() {
             szItem = 0xAFE6D0;
             int szSomaItem = 0xDC;
 
-            for (int i = 0; i < 40; i++) {
+            for (int i = 0; i < 128; i++) {
                 if (read(szItem + 0xA8, 4) > 0x01000000 && read(szItem + 0x8, 1) == 1) { //codeItem - stateItem
                     for (int j = 0; j < sizeof(arrayDontGet); j++) {
                         bFlagGet = true;
