@@ -5,10 +5,16 @@ void findMob();
 void putItem();
 void noHp();
 
-extern bool bAutoDamage, bDropItem, bNoHp;
+extern bool bAutoDamage, bAutoSkill, bDropItem, bNoHp;
 
 bool bSellItem = false;
 bool bFlagGet = false, bFlagSell = false;
+
+typedef int(__stdcall* selectRange)(int x, int y, int z, int range, int useAttackRating);
+selectRange dm_SelectRange = (selectRange)0x40680d;
+
+typedef int(__stdcall* sendRangeDamage)(int x, int y, int z, int lpCharTarget, int powParam1, int powParam2, int attackState, int registance, int dwSkillCode);
+sendRangeDamage dm_SendRangeDamage = (sendRangeDamage)0x40783a;
 
 struct smTRANS_ACITON_ITEM
 {

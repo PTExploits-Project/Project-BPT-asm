@@ -9,6 +9,12 @@ void inGame() {
 		if (rsCompString((char*)"/damageoff"))
 			bAutoDamage = false;
 
+		if (rsCompString((char*)"/skillon"))
+			bAutoSkill = true;
+
+		if (rsCompString((char*)"/skilloff"))
+			bAutoSkill = false;
+
 		if (rsCompString((char*)"/dropitemon"))
 			bDropItem = true;
 

@@ -1,5 +1,5 @@
 #include "Api.h"
 
-bool bAutoDamage, bDropItem, bNoHp;
+bool bAutoDamage, bAutoSkill, bDropItem, bNoHp;
 
 void inGame();

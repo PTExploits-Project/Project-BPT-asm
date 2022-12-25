@@ -1,6 +1,24 @@
 #include "pch.h"
 #include "thread.h"
 
+int ame = 0x44d0ff;
+
+__declspec(naked) int reformcharform() {
+    __asm {
+        mov eax, dword ptr ds:[0xAFE60C]
+        add eax,0x392c
+        push esi
+        push eax
+        call [ame]
+        mov esi, eax
+        test esi, esi
+        pop ecx
+        mov eax, esi
+        pop esi
+        retn
+    }
+}
+
 int volta = 0x410b12, callSendDamage = 0x4073b9, pMob = 0;
 bool bFoundMob = 0;
 
@@ -42,13 +60,19 @@ void findMob() {
                 y = read(chrOtherPlayer + 0x1DC, 4) - read(lpCurPlayer + 0x1EC, 4);
                 z = read(chrOtherPlayer + 0x1E0, 4) - read(lpCurPlayer + 0x1F0, 4);
 
-                if (bAutoDamage && bFlagGet == false && bFlagSell == false)
-                    if (abs(x) < 74000 && abs(z) < 50000) {
+                if (abs(x) < 74000 && abs(z) < 50000) {
+                    if (bAutoDamage) {
                         pMob = chrOtherPlayer - 0x10;
                         bFoundMob = true;
                         //SendTransDamage(chrOtherPlayer - 0x10, 0, 0, 0, 0, 0, 1, 0);
                         Sleep(700);
                     }
+                    if (bAutoSkill) {
+                        dm_SelectRange(read(chrOtherPlayer + 0x1D8, 4), read(chrOtherPlayer + 0x1DC, 4), read(chrOtherPlayer + 0x1E0, 4), 50, 0);
+                        dm_SendRangeDamage(read(chrOtherPlayer + 0x1D8, 4), read(chrOtherPlayer + 0x1DC, 4), read(chrOtherPlayer + 0x1E0, 4), 0, 5, 10, 0, 0, 0x11b);
+                        Sleep(1000);
+                    }
+                }
             }
             if (chrOtherPlayer < 0x1E46218)
                 chrOtherPlayer += somaOtherPlayer;
@@ -60,15 +84,12 @@ int getServerSock = 0x005D5C2B;
 int send2 = 0x0045F591;
 int szItem = 0;
 
-__declspec(naked)void sendputItem() {
+void sendputItem() {
     __asm {
-        push ebp
-        mov ebp, esp
         mov eax, [szItem]
         push[eax + 0x000000B0]
         call dword ptr ds : [getServerSock]
         cmp eax, ebx
-        pop ecx
         je abc
         push 01
         push[TransActionItem.size]
@@ -76,37 +97,25 @@ __declspec(naked)void sendputItem() {
         push ecx
         mov ecx, eax
         call dword ptr ds : [send2]
-        pop ecx
         abc :
-        pop ebp
-        push putItem
-        retn
     }
 }
 
 int sellitemtoshop = 0x004C9147;
 int szIvenItem = 0;
 
-__declspec(naked) void sellItemShop() {
+void sellItemShop() {
     __asm {
         push 1
         push[szIvenItem]
         mov ecx, 0x034057B0 //cSHOP
         call sellitemtoshop
-        add esp, 0xc
-        push putItem
-        retn
     }
 }
 
-void putItem() {
-    TransActionItem.code = smTRANSCODE_PUTITEM;
-    TransActionItem.size = sizeof(smTRANS_ACITON_ITEM);
-
+void sellitem() {
     while (true) {
         if (bSellItem) {
-            Sleep(2000);
-
             szIvenItem = 0x033B2AD4;
             int somaIvenItem = 0x314;
 
@@ -120,21 +129,24 @@ void putItem() {
                             break;
                         }
                     }
-                    if (bFlagSell)
-                        break;
+                    if (bFlagSell) {
+                        Sleep(1500);
+                        bSellItem = false, bFlagSell = false;
+                        sellItemShop();
+                    }
                 }
                 szIvenItem += somaIvenItem;
             }
-
-            if (bFlagSell) {
-                bSellItem = false, bFlagSell = false;
-                sellItemShop();
-            }
         }
+    }
+}
 
-        if (bDropItem) {
-            Sleep(2000);
+void putItem() {
+    TransActionItem.code = smTRANSCODE_PUTITEM;
+    TransActionItem.size = sizeof(smTRANS_ACITON_ITEM);
 
+    while (true) {
+         if (bDropItem) {
             szItem = 0xAFE6D0;
             int szSomaItem = 0xDC;
 
@@ -148,22 +160,21 @@ void putItem() {
                             break;
                         }
                     }
-                    if (bFlagGet)
-                        break;
+
+                    if (bFlagGet) {
+                        Sleep(3000);
+                        bSellItem = true, bFlagGet = false;
+
+                        TransActionItem.x = read(szItem + 0xc, 4);
+                        TransActionItem.y = read(szItem + 0x10, 4);
+                        TransActionItem.z = read(szItem + 0x14, 4);
+                        TransActionItem.lpStgArea = (void*)read(szItem + 0x98, 4);
+
+                        sendputItem();
+                    }
                 }
 
                 szItem += szSomaItem;
-            }
-
-            if (bFlagGet) {
-                bSellItem = true, bFlagGet = false;
-
-                TransActionItem.x = read(szItem + 0xc, 4);
-                TransActionItem.y = read(szItem + 0x10, 4);
-                TransActionItem.z = read(szItem + 0x14, 4);
-                TransActionItem.lpStgArea = (void*)read(szItem + 0x98, 4);
-
-                sendputItem();
             }
         }
     }
