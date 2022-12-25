@@ -1,6 +1,5 @@
 #include "Api.h"
 
-void dm_SendTransDamage();
 void findMob();
 void putItem();
 void noHp();
@@ -10,10 +9,13 @@ extern bool bAutoDamage, bAutoSkill, bDropItem, bNoHp;
 bool bSellItem = false;
 bool bFlagGet = false, bFlagSell = false;
 
-typedef int(__stdcall* selectRange)(int x, int y, int z, int range, int useAttackRating);
+typedef int(__stdcall* sendTransDamage)(int, int, int, int, int, int, int, int);
+sendTransDamage dm_SendTransDamage = (sendTransDamage)0x4073b9;
+
+typedef int(__stdcall* selectRange)(int, int, int, int, int);
 selectRange dm_SelectRange = (selectRange)0x40680d;
 
-typedef int(__stdcall* sendRangeDamage)(int x, int y, int z, int lpCharTarget, int powParam1, int powParam2, int attackState, int registance, int dwSkillCode);
+typedef int(__stdcall* sendRangeDamage)(int, int, int, int, int, int, int, int, int);
 sendRangeDamage dm_SendRangeDamage = (sendRangeDamage)0x40783a;
 
 struct smTRANS_ACITON_ITEM

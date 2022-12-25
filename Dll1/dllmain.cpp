@@ -3,8 +3,6 @@
 #include "Api.h"
 
 extern void inGame();
-extern int reformcharform();
-extern void dm_SendTransDamage();
 extern void findMob();
 extern void sellitem();
 extern void putItem();
@@ -207,14 +205,10 @@ void StartHook() {
                         write(0x00407400, (BYTE*)"\x90\x90\x90\x90\x90\x90", 6); //dwLastMouseMove
 
                         //dc4 drop item / sell item
-                        write(0x5d81BB, (BYTE*)"\xEB\x33", 2); //sendsethackuser
                         write(0x496bed, (BYTE*)"\xEB", 1); //checkinvenitemform
                         write(0x4c915c, (BYTE*)"\xEB", 1); //checksellitem
 
                         hookFunc(0xE9, (int)noHp, 0x0041ED5F); //trava hp
-
-                        hookFunc(0xE9, (int)dm_SendTransDamage, 0x410b0c);
-                        hookFunc(0xE9, (int)reformcharform, 0x44d12f);
                     }
                     else {
                         MessageBoxA(0, "Error 500", "", MB_OK | MB_ICONERROR);

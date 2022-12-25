@@ -1,48 +1,25 @@
 #include "pch.h"
 #include "thread.h"
 
-int ame = 0x44d0ff;
+void autoAttack(int lpChar, int powParam1, int powParam2, int attackState, int resistance, int dwSkillCode, int useaccuracy) {
+    dm_SendTransDamage(lpChar, powParam1, powParam2, attackState, resistance, dwSkillCode, useaccuracy, 0);
+}
 
-__declspec(naked) int reformcharform() {
+void autoSkill(int x, int y, int z, int lpCharTarget, int atqMin, int atqMax, int attackState, int registance, int dwSkillCode) {
+    dm_SelectRange(x, y, z, 160, 0);
+    dm_SendRangeDamage(x, y, z, lpCharTarget, atqMin, atqMax, attackState, registance, dwSkillCode);
+}
+
+int lpReformCharForm = 0x0044D0FF;
+
+__declspec(naked) int reformCharForm() {
     __asm {
         mov eax, dword ptr ds:[0xAFE60C]
         add eax,0x392c
-        push esi
         push eax
-        call [ame]
-        mov esi, eax
-        test esi, esi
+        call [lpReformCharForm]
         pop ecx
-        mov eax, esi
-        pop esi
         retn
-    }
-}
-
-int volta = 0x410b12, callSendDamage = 0x4073b9, pMob = 0;
-bool bFoundMob = 0;
-
-__declspec(naked) void dm_SendTransDamage() {
-    __asm {
-        cmp [bFoundMob], 0
-        je testao
-        push 0
-        push 1
-        push 0
-        push 0
-        push 0
-        push 0
-        push 0
-        push [pMob]
-        call [callSendDamage]
-        add esp, 0x20
-        mov dword ptr ds: [bFoundMob], 0
-
-        testao:
-        push ebp
-        mov ebp, esp
-        sub esp, 0x1c
-        jmp [volta]
     }
 }
 
@@ -62,14 +39,16 @@ void findMob() {
 
                 if (abs(x) < 74000 && abs(z) < 50000) {
                     if (bAutoDamage) {
-                        pMob = chrOtherPlayer - 0x10;
-                        bFoundMob = true;
-                        //SendTransDamage(chrOtherPlayer - 0x10, 0, 0, 0, 0, 0, 1, 0);
+                        autoAttack(chrOtherPlayer - 0x10, 0, 0, 0, 0, 0, 1);
                         Sleep(700);
                     }
+
                     if (bAutoSkill) {
-                        dm_SelectRange(read(chrOtherPlayer + 0x1D8, 4), read(chrOtherPlayer + 0x1DC, 4), read(chrOtherPlayer + 0x1E0, 4), 50, 0);
-                        dm_SendRangeDamage(read(chrOtherPlayer + 0x1D8, 4), read(chrOtherPlayer + 0x1DC, 4), read(chrOtherPlayer + 0x1E0, 4), 0, 5, 10, 0, 0, 0x11b);
+                        int pPosX = read(chrOtherPlayer + 0x1D8, 4);
+                        int pPosY = read(chrOtherPlayer + 0x1DC, 4);
+                        int pPosZ = read(chrOtherPlayer + 0x1E0, 4);
+
+                        autoSkill(pPosX, pPosY, pPosZ, 0, 5, 10, 0, 0, 0x11b);
                         Sleep(1000);
                     }
                 }
@@ -97,6 +76,7 @@ void sendputItem() {
         push ecx
         mov ecx, eax
         call dword ptr ds : [send2]
+        call reformCharForm
         abc :
     }
 }
@@ -109,7 +89,8 @@ void sellItemShop() {
         push 1
         push[szIvenItem]
         mov ecx, 0x034057B0 //cSHOP
-        call sellitemtoshop
+        call [sellitemtoshop]
+        call reformCharForm
     }
 }
 
@@ -119,7 +100,7 @@ void sellitem() {
             szIvenItem = 0x033B2AD4;
             int somaIvenItem = 0x314;
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 20; i++) {
                 if (read(szIvenItem, 4) > 0x01000000 && read(szIvenItem + 0xE4, 1) == 0 && read(szIvenItem + 0xCC, 1) == 1) { //codeItem - useItem - mouseItem
                     for (int j = 0; j < sizeof(arrayDontSell); j++) {
                         bFlagSell = true;
@@ -129,8 +110,8 @@ void sellitem() {
                             break;
                         }
                     }
-                    if (bFlagSell) {
-                        Sleep(1500);
+                    if (bFlagSell && bFlagGet == false) {
+                        Sleep(1000);
                         bSellItem = false, bFlagSell = false;
                         sellItemShop();
                     }
@@ -150,7 +131,7 @@ void putItem() {
             szItem = 0xAFE6D0;
             int szSomaItem = 0xDC;
 
-            for (int i = 0; i < 128; i++) {
+            for (int i = 0; i < 20; i++) {
                 if (read(szItem + 0xA8, 4) > 0x01000000 && read(szItem + 0x8, 1) == 1) { //codeItem - stateItem
                     for (int j = 0; j < sizeof(arrayDontGet); j++) {
                         bFlagGet = true;
@@ -162,7 +143,7 @@ void putItem() {
                     }
 
                     if (bFlagGet) {
-                        Sleep(3000);
+                        Sleep(1000);
                         bSellItem = true, bFlagGet = false;
 
                         TransActionItem.x = read(szItem + 0xc, 4);
