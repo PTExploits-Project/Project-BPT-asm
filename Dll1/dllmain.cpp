@@ -128,169 +128,162 @@ struct smTRANS_COMMAND_EX
 
 };
 
-struct	sITEM_CREATE {
-    DWORD	Head;			//Header
-    DWORD	dwVersion;		//Generated version
-    DWORD	dwTime;			//Creation Time
-    DWORD	dwChkSum;		//Items checksum
+struct	sITEM_CREATE
+{
+    DWORD	Head;
+    DWORD	dwVersion;
+    DWORD	dwTime;
+    DWORD	dwChkSum;
 };
 
-struct sITEM_SPECIAL {
+struct sITEM_SPECIAL
+{
 
-    float	Add_fAbsorb;			//Add Absorb 
-    int     Add_Defence;			//Add Defence 
-    float   Add_fSpeed;				//Add Speed 
-    float   Add_fBlock_Rating;		//Add BlockRating
-    int     Add_Attack_Speed;		//Add AttackSpeed
-    int     Add_Critical_Hit;		//Add CriticalHit
-    int     Add_Shooting_Range;		//Shooting Range 
-    float   Add_fMagic_Mastery;     //Magic Mastery
-    short	Add_Resistance[8];		//Resistance
+    float	Add_fAbsorb;
+    int     Add_Defence;
+    float   Add_fSpeed;
+    float   Add_fBlock_Rating;
+    int     Add_Attack_Speed;
+    int     Add_Critical_Hit;
+    int     Add_Shooting_Range;
+    float   Add_fMagic_Mastery;
+    short	Add_Resistance[8];
 
-    ////////////////////////////////////////////////
 
-    short	Lev_Attack_Resistance[8];	//¿ø¼Ò¿¡´ëÇÑ °ø°Ý·Â
-    int		Lev_Mana;				//¸¶³ªÈ¸º¹(ÃÖ¼Ò)(ÃÖ´ë)
-    int		Lev_Life;				//¶óÀÌÇÁÈ¸º¹(ÃÖ¼Ò)(ÃÖ´ë) 
-    int     Lev_Attack_Rating;		//¸íÁß·Â 
-    short	Lev_Damage[2];			//°ø°Ý·Â
 
-    float	Per_Mana_Regen;			//¸¶³ª Àç»ý 6
-    float	Per_Life_Regen;			//¶óÀÌÇÁ Àç»ý 
-    float	Per_Stamina_Regen;		//½ºÅ×¹Ì³ª Àç»ý
+    short	Lev_Attack_Resistance[8];
+    int		Lev_Mana;
+    int		Lev_Life;
+    int     Lev_Attack_Rating;
+    short	Lev_Damage[2];
 
-    //////////////////////////////////////////////////
+    float	Per_Mana_Regen;
+    float	Per_Life_Regen;
+    float	Per_Stamina_Regen;
+
+
 
     DWORD	dwTemp[32];
 };
 
-struct sITEMINFO {
+struct sITEMINFO
+{
 
-    DWORD	dwSize;						//¾ÆÀÌÅÛ ±¸Á¶ Å©±â
+    DWORD	dwSize;
 
-    sITEM_CREATE	ItemHeader;			//¾ÆÀÌÅÛ »ý¼º Á¤º¸
+    sITEM_CREATE	ItemHeader;
 
-    short	Durability[2];				//³»±¸·Â
+    short	Durability[2];
 
-    //////// ½ÇÁ¦ ¾ÆÀÌÅÛ µ¥ÀÌÅ¸Á¤º¸°¡ µé¾î°©´Ï´Ù /////////
 
-    /*-------------------------*
-    *		 ¾ÆÀÌÅÛ Á¤º¸
-    *--------------------------*/
-    DWORD	CODE;				//¾ÆÀÌÅÛ ÄÚµå 	
-    char	ItemName[32];		//¾ÆÀÌÅÛ ÀÌ¸§ 	
 
-    /*-------------------------*
-    *		°øÅë »çÇ×
-    *--------------------------*/
-    int     Weight;				//¹«°Ô 		
-    int     Price;				//°¡°Ý
 
-    /////////////////////////////////////////
-    int		Index;				//ÀÎµ¦½º
-    int		PotionCount;		//Æ÷¼ÇÄ«¿îÅÍ
-    ////////////////////////////////////////
+    DWORD	CODE;
+    char	ItemName[32];
 
-    /**¿ø¼Ò**/
-    short	Resistance[8];		//¿ø¼Ò¿¡´ëÇÑ ÀúÇ×·Â 
-    /********/
 
-    int		Sight;				//½Ã¾ß
+    int     Weight;
+    int     Price;
+
+
+    int		Index;
+    int		PotionCount;
+
+
+
+    short	Resistance[8];
+
+
+    int		Sight;
 
     DWORD	Temp0;
 
-    /*-------------------------*
-    *		 °ø°Ý¼º´É
-    *--------------------------*/
-    short	Damage[2];			//°ø°Ý·Â 
-    int     Shooting_Range;		//»çÁ¤°Å¸® 
-    int     Attack_Speed;		//°ø°Ý¼Óµµ 
-    int     Attack_Rating;		//¸íÁß·Â 
-    int     Critical_Hit;		//1.5¹è µ¥¹ÌÁöÈ®À²  
 
-    /*-------------------------*
-    *		 ¹æ¾î¼º´É
-    *--------------------------*/
-
-    float	fAbsorb;			//Èí¼ö·Â 
-    int     Defence;			//¹æ¾î·Â 
-    float   fBlock_Rating;		//(¹æÆÐ)ºí·°À² 
-
-    /*-------------------------*
-    *		 ÀÌµ¿¼º´É
-    *--------------------------*/
-    float     fSpeed;				//ÀÌµ¿ ¼Óµµ 
-
-    /*-------------------------*
-    *		 ÆÈÂî ¼º´É
-    *--------------------------*/
-
-    int		Potion_Space;		//¼ÒÄÏ °ø°£ ÇÒ´ç 
-
-    /**Æ¯¼ö´É·Â**/
-    float   fMagic_Mastery;     //¸¶¹ý¼÷·Ãµµ 
-    float   fMana_Regen;		//¸¶³ª Àç»ý 
-    float   fLife_Regen;		//¶óÀÌÇÁ Àç»ý 
-    float   fStamina_Regen;	    //½ºÅ×¹Ì³ª Àç»ý 
-    float   fIncrease_Life;     //¶óÀÌÇÁ ÃÖ´ëÄ¡»ó½Â 
-    float   fIncrease_Mana;     //¸¶³ª ÃÖ´ëÄ¡»ó½Â
-    float   fIncrease_Stamina;  //½ºÅ×¹Ì³ª ÃÖ´ëÄ¡»ó½Â
-
-    /************/
-
-    /*-------------------------*
-    *		¿ä±¸Æ¯¼º
-    *--------------------------*/
-    int     Level;				//·¹º§ 
-    int     Strength;			//Èû 	
-    int     Spirit;				//Á¤½Å·Â 
-    int     Talent;				//Àç´É 
-    int     Dexterity;			//¹ÎÃ¸¼º 
-    int     Health;				//°Ç°­ 
-
-    /*-------------------------*
-    *		 È¸º¹¾à
-    *--------------------------*/
-    short   Mana[2];            //¸¶³ªÈ¸º¹(ÃÖ¼Ò)(ÃÖ´ë)
-    short   Life[2];            //¶óÀÌÇÁÈ¸º¹(ÃÖ¼Ò)(ÃÖ´ë) 
-    short   Stamina[2];         //½ºÅ×¹Ì³ÊÈ¸º¹(ÃÖ¼Ò)(ÃÖ´ë)
-
-    /*-------------------------*
-    *		 .....
-    *--------------------------*/
-    int		Money;				//º¸À¯ÇÑ µ·
-    int     NotUseFlag;         //»ç¿ëºÒ°¡´É ÇÃ·¢
-
-    DWORD	BackUpKey;			//¹é¾÷Çì´õ
-    DWORD	BackUpChkSum;		//¹é¾÷ ¾ÆÀÌÅÛ Ã¼Å©¼¶
-
-    short   ScaleBlink[2];		//½ºÄÉÀÏ º¯°æ 
-    DWORD	UniqueItem;			//À¯´ÏÅ©
-    short	EffectBlink[2];		//»ö»óÇ¥½Ã ÁÖ±â (0) ÀÌÆåÆ® Ã½Å©¼¶(1)
-    short	EffectColor[4];		//»ö»óÇ¥½Ã¸ðµå
-
-    DWORD	DispEffect;			//¾ÆÀÌÅÛ Ç¥½Ã ÀÌÆåÆ® (¿¹Á¤)
+    short	Damage[2];
+    int     Shooting_Range;
+    int     Attack_Speed;
+    int     Attack_Rating;
+    int     Critical_Hit;
 
 
-    /*-------------------------*
-    *		Ä³¸¯ÅÍ Æ¯È­¾ÆÀÌÅÛ    (ÇöÀç ¹Ì¼³Á¤)
-    *--------------------------*/
 
-    DWORD			JobCodeMask;		//Æ¯È­ Á÷¾÷	(Á÷¾÷º° ºñÆ® ¸¶½ºÅ©)
-    sITEM_SPECIAL	JobItem;			//Æ¯È­ ¾ÆÀÌÅÛ ¼º´É
+    float	fAbsorb;
+    int     Defence;
+    float   fBlock_Rating;
 
-    DWORD   ItemKindCode;		//¾ÆÀÌÅÛ Á¾·ù 0ÀÌ¸é ³ë¸Ö ¾ÆÀÌÅÛ 
+
+    float     fSpeed;
+
+
+
+    int		Potion_Space;
+
+
+    float   fMagic_Mastery;
+    float   fMana_Regen;
+    float   fLife_Regen;
+    float   fStamina_Regen;
+    float   fIncrease_Life;
+    float   fIncrease_Mana;
+    float   fIncrease_Stamina;
+
+
+
+
+    int     Level;
+    int     Strength;
+    int     Spirit;
+    int     Talent;
+    int     Dexterity;
+    int     Health;
+
+
+    short   Mana[2];
+    short   Life[2];
+    short   Stamina[2];
+
+
+    int		Money;
+    int     NotUseFlag;
+
+    DWORD	BackUpKey;
+    DWORD	BackUpChkSum;
+
+    short   ScaleBlink[2];
+    DWORD	UniqueItem;
+    short	EffectBlink[2];
+    short	EffectColor[4];
+
+    DWORD	DispEffect;
+
+
+
+
+    DWORD			JobCodeMask;
+    sITEM_SPECIAL	JobItem;
+
+    DWORD   ItemKindCode;
     DWORD   ItemKindMask;
 
-    short   ItemAgingNum[2];	//0Àº ¿¡ÀÌÂ¡+¸î 1Àº ¿¡ÀÌÂ¡ÀÌ µÇ°íÀÖ³ª ¾Æ´Ñ°¡?
-    short   ItemAgingCount[2];	//0¾ÆÀÌÅÛ ¼÷·Ã Ä«¿îÆ® 1¼÷·ÃÄ¡ ÃÖ´ë 
-    short   ItemAgingProtect[2];//¿¡ÀÌÂ¡ º¸È£ 
+    short   ItemAgingNum[2];
+    short   ItemAgingCount[2];
+    short   ItemAgingProtect[2];
 
-    short   SpecialItemFlag[2];   //0Àº ÀúÁÖ¾ÆÀÌÅÛ ÇÃ·º 1 Àº Äù½ºÆ®°°Àº °÷¿¡ »ç¿ëµÇ´Â Æ¯¼ö¾ÆÀÌÅÛ
+    short   SpecialItemFlag[2];
 
-    DWORD	dwCreateTime;		//»ý¼º ½Ã°£
-    DWORD	dwTemp[9];			//¿¹ºñ
+    DWORD	dwCreateTime;
+    DWORD	dwTemp[8];
 
+    int		iMixType = 0;
+    int a;
+    int b;
+    int c;
+    int d;
+    int e;
+    int f;
+    int g;
+    int h;
+    int i;
 };
 
 struct TRANS_ITEMINFO
@@ -398,34 +391,6 @@ void validateItem(sITEMINFO* sItem, DWORD dwPlayTime) {
     sItem->Temp0 = sItem->ItemHeader.dwChkSum + sItem->CODE;
 }
 
-#define XOR_ITEM_SeCode_0	0x536c56ba
-#define XOR_ITEM_SeCode_1	0x9ab536cd
-#define XOR_ITEM_SeCode_2	0xc6abce56
-
-DWORD rsITEM_SecCode_Xor[] = {
-    0x6794bca6 ,
-    0x78645fe3 ,
-    0xcea82934 ,
-    0x56fdca87 ,
-    0x357d3653 ,
-    0xf3487eba ,
-    0x3478978f ,
-    0x6793fbc2 ,
-    0x5842eec6 ,
-    0x257ecdb5 ,
-    0x579cbec5 ,
-    0x985612ab ,
-    0x5487cc56 ,
-    0xba7d4553 ,
-    0xeca53b96 ,
-    0xb5c549ce
-};
-
-DWORD rsRegist_EnterKey(DWORD _dwCode, DWORD _dwAdd)
-{
-    return rsITEM_SecCode_Xor[(_dwCode + _dwAdd) & 0xF];
-}
-
 DWORD GetSpeedSum(const char* szName)
 {
     DWORD cnt;
@@ -460,86 +425,78 @@ DWORD GetSpeedSum(const char* szName)
     return (dwSum << 24) | (Sum1 << 16) | Sum2;
 }
 
-int	RegisterItem(TRANS_ITEMINFO* lpTransItemInfo, sITEMINFO* sItem, int NewItem)
+TRANS_ITEMINFO	TransThrowItem;
+
+int ThrowPutItem2(sITEMINFO* lpItem, int x, int y, int z, char* szCharName, int dwObjectSerial, int addrReformItem)
 {
-    DWORD	cnt;
-    DWORD	Key;
+    int OPCODE_THROWITEM = 0x10079;
+    TransThrowItem.code = OPCODE_THROWITEM;
+    TransThrowItem.size = sizeof(TRANS_ITEMINFO);
+    TransThrowItem.x = x;
+    TransThrowItem.y = y;
+    TransThrowItem.z = z;
 
-    DWORD lpCurPlayer = read(0x017A3058, 4);
-    DWORD	dwOs = read(lpCurPlayer + 0x39C8, 4); //dwobjectserial
-    DWORD	dwCode_Name = GetSpeedSum("crooks2"); //namechar
-    DWORD	dwSvCode = 0;
-    DWORD	dwSndCount = 1;
-    DWORD	dwItemChkSum = sItem->ItemHeader.dwChkSum ^ sItem->ItemHeader.Head;
-    DWORD dwPlayTime = GetCurrentTime(); //read(0x00FD9D1C, 4);
+    memcpy(&TransThrowItem.Item, lpItem, sizeof(sITEMINFO));
 
+    //ThrowPutItem
+    TransThrowItem.dwSeCode[0] = *(DWORD*)0x03E05874;
+    TransThrowItem.dwSeCode[1] = *(DWORD*)0x03E05878;
+    TransThrowItem.dwSeCode[2] = *(DWORD*)0x03E0587C;
+    TransThrowItem.dwSeCode[3] = *(DWORD*)0x03E05880;
 
-    Key = (dwPlayTime & 0xFFFF) ^ dwItemChkSum;
-    Key = Key ^ (Key << 10);
+    if (TransThrowItem.dwSeCode[0] == 0 || TransThrowItem.dwSeCode[1] == 0 || TransThrowItem.dwSeCode[2] == 0|| TransThrowItem.dwSeCode[3] == 0)
+        return FALSE;
 
-    lpTransItemInfo->dwSeCode[0] = (dwSvCode << 16) | (dwSndCount & 0xFFFF);
+    DWORD dwCode_Name = GetSpeedSum(szCharName);
 
-    if (NewItem) lpTransItemInfo->dwSeCode[0] |= 0x8000000;
-    else lpTransItemInfo->dwSeCode[0] &= 0x7FFFFFFF;
+    //Old dwSeCode
+    DWORD dwItemChkSum = TransThrowItem.Item.ItemHeader.dwChkSum ^ TransThrowItem.Item.ItemHeader.Head; //dwChkSum e Head do item que está no inventário
 
-    lpTransItemInfo->dwSeCode[1] = dwItemChkSum ^ ((dwCode_Name & 0xFFFF) | (dwOs << 16));
-    lpTransItemInfo->dwSeCode[2] = 0 ^ lpTransItemInfo->dwSeCode[0] ^ lpTransItemInfo->dwSeCode[1];
-    lpTransItemInfo->dwSeCode[3] = Key;
+    DWORD dwSeCode[4];
 
-    lpTransItemInfo->dwSeCode[0] ^= (XOR_ITEM_SeCode_0 ^ rsRegist_EnterKey(Key ^ dwOs, 0));
-    lpTransItemInfo->dwSeCode[1] ^= (XOR_ITEM_SeCode_1 ^ rsRegist_EnterKey(Key ^ dwOs, 1));
-    lpTransItemInfo->dwSeCode[2] ^= (XOR_ITEM_SeCode_2 ^ rsRegist_EnterKey(Key ^ dwOs, 2));
+    dwSeCode[0] = (0 << 16) | (0 & 0xFFFF);
+    dwSeCode[0] &= 0x7FFFFFFF;
 
-    /*(DWORD*)0xfa81fc = sItem->ItemHeader.dwChkSum;
-    *(DWORD*)0xfa8200 = sItem->ItemHeader.Head;
-    *(DWORD*)0xfa8204 = lpTransItemInfo->dwSeCode[1];
-    *(DWORD*)0xfa8208 = lpTransItemInfo->dwSeCode[3];*/
+    TransThrowItem.dwSeCode[0] ^= dwSeCode[0];
 
-    //lpPlayInfo->smCharInfo.SndItemSecCodeCount++;
+    TransThrowItem.dwSeCode[2] ^= TransThrowItem.dwSeCode[0] ^ TransThrowItem.dwSeCode[1];
+    TransThrowItem.dwSeCode[1] ^= dwItemChkSum ^ ((dwCode_Name & 0xFFFF) | (dwObjectSerial << 16));
+
+    //ReformItem
+    /*TransThrowItem.Item.ItemHeader.Head = 1000 + GetCurrentTime();
+    DWORD dwCode = GetRefromItemCode(&TransThrowItem.Item, TransThrowItem.Item.ItemHeader.Head);
+    TransThrowItem.Item.ItemHeader.dwChkSum = dwCode;*/
+    typedef int(__cdecl* freformItem)(sITEMINFO* sItem);
+    freformItem reformItem = (freformItem)addrReformItem;
+
+    reformItem(&TransThrowItem.Item);
+
+    TransThrowItem.Item.ItemHeader.dwTime = GetCurrentTime();
+    TransThrowItem.Item.Temp0 = TransThrowItem.Item.CODE + TransThrowItem.Item.ItemHeader.dwChkSum;
+
+    //New dwSeCode
+    DWORD dwItemChkSum2 = TransThrowItem.Item.ItemHeader.dwChkSum ^ TransThrowItem.Item.ItemHeader.Head;
+
+    dwSeCode[0] = (0 << 16) | (4 & 0xFFFF);
+    dwSeCode[0] &= 0x7FFFFFFF;
+
+    TransThrowItem.dwSeCode[0] ^= dwSeCode[0];
+
+    TransThrowItem.dwSeCode[1] ^= dwItemChkSum2 ^ ((dwCode_Name & 0xFFFF) | (dwObjectSerial << 16));
+    TransThrowItem.dwSeCode[2] ^= TransThrowItem.dwSeCode[0] ^ TransThrowItem.dwSeCode[1];
+
+    int send = 0x6300B0;
+
+    __asm {
+        //push 1
+        push[TransThrowItem.size]
+        lea edx, [TransThrowItem.size]
+        push edx
+        mov ecx, dword ptr ds: [0x3DDE4A8] //smWSockDataServer
+        call [send]
+    }
 
     return TRUE;
-}
-
-smTRANS_COMMAND_EX			TransCommandEx;
-
-void checkRegister(smTRANS_COMMAND_EX* smTrans) {
-    DWORD lpCurPlayer = read(0x00A6DC8C, 4);
-    DWORD	dwOs = read(lpCurPlayer + 0x39C4, 4); //dwobjectserial
-
-    DWORD	dwSeCode[4];
-
-    DWORD Key = smTrans->ExParam;
-
-    dwSeCode[1] = smTrans->LxParam ^ (XOR_ITEM_SeCode_1 ^ rsRegist_EnterKey(Key ^ dwOs, 1));
-
-    DWORD dwCmpCode = (smTrans->LParam ^ smTrans->SParam) ^ ((GetSpeedSum("stest") & 0xFFFF) | (dwOs << 16));
-
-    /*if (dwSeCode[1] != dwCmpCode)
-        MessageBoxA(NULL, "Error", "Error", MB_ICONERROR | MB_OK);
-    else
-        MessageBoxA(NULL, "Ok", "", MB_OK);*/
-}
-
-void testezin(TRANS_ITEMINFO* lpTransItemInfo, sITEMINFO* sItem) {
-    validateItem(sItem, read(0x00AB24D8, 4));
-
-    int PKTHR_GETITEM = 0x4847005A;
-
-    TransCommandEx.code = PKTHR_GETITEM;
-    TransCommandEx.size = sizeof(smTRANS_COMMAND_EX);
-    TransCommandEx.WParam = sItem->CODE;
-    TransCommandEx.LParam = sItem->ItemHeader.Head;
-    TransCommandEx.SParam = sItem->ItemHeader.dwChkSum;
-    TransCommandEx.EParam = 0 ^ PKTHR_GETITEM ^ sItem->ItemHeader.dwChkSum;
-
-    RegisterItem(lpTransItemInfo, sItem, 1);
-
-    TransCommandEx.WxParam = lpTransItemInfo->dwSeCode[0];
-    TransCommandEx.LxParam = lpTransItemInfo->dwSeCode[1];
-    TransCommandEx.SxParam = lpTransItemInfo->dwSeCode[2];
-    TransCommandEx.ExParam = lpTransItemInfo->dwSeCode[3];
-
-    checkRegister(&TransCommandEx);
 }
 
 void StartHook() {
@@ -547,26 +504,27 @@ void StartHook() {
     int codeGame = 0;
     HANDLE hThread = 0;
 
-    TRANS_ITEMINFO* lpTransItemInfo = new TRANS_ITEMINFO;
-    sITEMINFO* sItem = (sITEMINFO*)0x00FF6FD0;
-
     while (true) {
         if (GetAsyncKeyState(VK_F1) < 0) {
             Sleep(200);
-            for (int i = 0; i < 528; i++) {
-                int iItem = read(0x070C7668 + i, 1);
-                write(0x00FF6FD0 + i, &iItem, 1);
-            }
-        }
 
-        if (GetAsyncKeyState(VK_F2) < 0) {
-            Sleep(200);
-            testezin(lpTransItemInfo, sItem);
-        }
+            int lpCurPlayer = read(0xD668DC, 4);
 
-        if (GetAsyncKeyState(VK_F3) < 0) {
-            Sleep(200);
-            write(0x00FF6FC0, (BYTE*)"\x1", 1);
+            int pX = read(lpCurPlayer + 0x1D0, 4);
+            int pY = read(lpCurPlayer + 0x1D4, 4);
+            int pZ = read(lpCurPlayer + 0x1D8, 4);
+
+            int dwObjectSerial = read(lpCurPlayer + 0xC, 4);
+            int addrReformItem = 0x62BDC0;
+
+            write(addrReformItem + 0xC, (BYTE*)"\xEB", 1);
+
+            memcpy((void*)0x1ffa210, (void*)0x03BDA278, sizeof(sITEMINFO)); //Item perfeito
+
+            if (!ThrowPutItem2((sITEMINFO*)0x1ffa210, pX, pY, pZ, (char*)"fiqueman", dwObjectSerial, addrReformItem))
+                MessageBoxA(NULL, "nao fez o item", "", MB_OK);
+            else
+                MessageBoxA(NULL, "pacote enviado", "", MB_OK);
         }
 
          if (bPatch) {
