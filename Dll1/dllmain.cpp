@@ -426,6 +426,7 @@ DWORD GetSpeedSum(const char* szName)
 }
 
 TRANS_ITEMINFO	TransThrowItem;
+int itemCnt = 4;
 
 int ThrowPutItem2(sITEMINFO* lpItem, int x, int y, int z, char* szCharName, int dwObjectSerial, int addrReformItem)
 {
@@ -439,10 +440,11 @@ int ThrowPutItem2(sITEMINFO* lpItem, int x, int y, int z, char* szCharName, int 
     memcpy(&TransThrowItem.Item, lpItem, sizeof(sITEMINFO));
 
     //ThrowPutItem
-    TransThrowItem.dwSeCode[0] = *(DWORD*)0x03E05874;
-    TransThrowItem.dwSeCode[1] = *(DWORD*)0x03E05878;
-    TransThrowItem.dwSeCode[2] = *(DWORD*)0x03E0587C;
-    TransThrowItem.dwSeCode[3] = *(DWORD*)0x03E05880;
+    int throwItem = 0x4295628;
+    TransThrowItem.dwSeCode[0] = read(throwItem + 0x24C, 4);
+    TransThrowItem.dwSeCode[1] = read(throwItem + 0x250, 4);
+    TransThrowItem.dwSeCode[2] = read(throwItem + 0x254, 4);
+    TransThrowItem.dwSeCode[3] = read(throwItem + 0x258, 4);
 
     if (TransThrowItem.dwSeCode[0] == 0 || TransThrowItem.dwSeCode[1] == 0 || TransThrowItem.dwSeCode[2] == 0|| TransThrowItem.dwSeCode[3] == 0)
         return FALSE;
@@ -450,7 +452,7 @@ int ThrowPutItem2(sITEMINFO* lpItem, int x, int y, int z, char* szCharName, int 
     DWORD dwCode_Name = GetSpeedSum(szCharName);
 
     //Old dwSeCode
-    DWORD dwItemChkSum = TransThrowItem.Item.ItemHeader.dwChkSum ^ TransThrowItem.Item.ItemHeader.Head; //dwChkSum e Head do item que está no inventário
+    DWORD dwItemChkSum = read(throwItem + 0x18, 4) ^ read(throwItem + 0xC, 4); //dwChkSum e Head do item que está no inventário
 
     DWORD dwSeCode[4];
 
@@ -477,7 +479,7 @@ int ThrowPutItem2(sITEMINFO* lpItem, int x, int y, int z, char* szCharName, int 
     //New dwSeCode
     DWORD dwItemChkSum2 = TransThrowItem.Item.ItemHeader.dwChkSum ^ TransThrowItem.Item.ItemHeader.Head;
 
-    dwSeCode[0] = (0 << 16) | (4 & 0xFFFF);
+    dwSeCode[0] = (0 << 16) | (itemCnt & 0xFFFF);
     dwSeCode[0] &= 0x7FFFFFFF;
 
     TransThrowItem.dwSeCode[0] ^= dwSeCode[0];
@@ -485,16 +487,18 @@ int ThrowPutItem2(sITEMINFO* lpItem, int x, int y, int z, char* szCharName, int 
     TransThrowItem.dwSeCode[1] ^= dwItemChkSum2 ^ ((dwCode_Name & 0xFFFF) | (dwObjectSerial << 16));
     TransThrowItem.dwSeCode[2] ^= TransThrowItem.dwSeCode[0] ^ TransThrowItem.dwSeCode[1];
 
-    int send = 0x6300B0;
+    int send = 0x00AC00B0;
 
     __asm {
         //push 1
         push[TransThrowItem.size]
         lea edx, [TransThrowItem.size]
         push edx
-        mov ecx, dword ptr ds: [0x3DDE4A8] //smWSockDataServer
+        mov ecx, dword ptr ds: [0x426E4A8] //smWSockDataServer
         call [send]
     }
+
+    itemCnt++;
 
     return TRUE;
 }
@@ -508,20 +512,18 @@ void StartHook() {
         if (GetAsyncKeyState(VK_F1) < 0) {
             Sleep(200);
 
-            int lpCurPlayer = read(0xD668DC, 4);
+            int lpCurPlayer = read(0x11F68DC, 4);
 
             int pX = read(lpCurPlayer + 0x1D0, 4);
             int pY = read(lpCurPlayer + 0x1D4, 4);
             int pZ = read(lpCurPlayer + 0x1D8, 4);
 
             int dwObjectSerial = read(lpCurPlayer + 0xC, 4);
-            int addrReformItem = 0x62BDC0;
+            int addrReformItem = 0x00ABBDC0;
 
             write(addrReformItem + 0xC, (BYTE*)"\xEB", 1);
 
-            memcpy((void*)0x1ffa210, (void*)0x03BDA278, sizeof(sITEMINFO)); //Item perfeito
-
-            if (!ThrowPutItem2((sITEMINFO*)0x1ffa210, pX, pY, pZ, (char*)"fiqueman", dwObjectSerial, addrReformItem))
+            if (!ThrowPutItem2((sITEMINFO*)0x0406A278, pX, pY, pZ, (char*)"fiqueman", dwObjectSerial, addrReformItem))
                 MessageBoxA(NULL, "nao fez o item", "", MB_OK);
             else
                 MessageBoxA(NULL, "pacote enviado", "", MB_OK);
